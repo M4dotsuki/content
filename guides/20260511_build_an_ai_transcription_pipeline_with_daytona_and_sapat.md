@@ -2,10 +2,10 @@
 title: "Build an AI Transcription Pipeline with Daytona"
 description:
   "Use Sapat in a Daytona workspace to turn videos into transcripts with
-  OpenAI, Groq, or Azure OpenAI."
+  OpenAI, Groq, Azure OpenAI, or a Deepgram provider extension."
 date: 2026-05-11
 author: "M4dotsuki"
-tags: ["transcription", "daytona", "sapat", "openai", "groq"]
+tags: ["transcription", "daytona", "sapat", "openai", "groq", "deepgram"]
 ---
 
 # Build an AI Transcription Pipeline with Daytona
@@ -23,8 +23,10 @@ This guide shows how to use [Daytona](https://www.daytona.io/) with
 [Sapat](https://github.com/nkkko/sapat), a small Python command-line tool that
 extracts audio with `ffmpeg` and sends it to OpenAI, Groq, or Azure OpenAI for
 [speech-to-text transcription](../definitions/20260511_definition_speech_to_text_transcription.md).
-By the end, you will have a reproducible workspace, a configured provider, a
-working `sapat` command, and a checklist for validating transcript quality.
+You will also see how the provider pattern can be extended with another speech
+API such as Deepgram. By the end, you will have a reproducible workspace, a
+configured provider, a working `sapat` command, and a checklist for validating
+transcript quality.
 
 ## TL;DR
 
@@ -43,7 +45,8 @@ Before starting, make sure you have:
 - An IDE such as VS Code.
 - Python 3.6 or newer inside the workspace.
 - `ffmpeg` available in the workspace terminal.
-- An API key for one transcription provider: OpenAI, Groq, or Azure OpenAI.
+- An API key for one transcription provider: OpenAI, Groq, Azure OpenAI, or
+  Deepgram if your checkout includes the companion provider extension.
 - A short `.mp4` video you are allowed to process.
 
 This guide uses Sapat directly from its public repository. If you plan to use
@@ -65,7 +68,8 @@ That flow has four practical benefits:
 - **Repeatability**: Daytona gives each run a consistent workspace instead of
   relying on whatever is installed on your laptop.
 - **Provider choice**: Sapat supports `openai`, `groq`, and `azure` through the
-  same command-line interface.
+  same command-line interface, and the same structure can support providers such
+  as Deepgram.
 - **Batch processing**: A directory input lets you transcribe every `.mp4` file
   in that folder.
 - **Simple output**: Each transcript is saved as plain text, which is easy to
@@ -73,7 +77,9 @@ That flow has four practical benefits:
 
 The most important constraint is that Sapat currently expects the `--api`
 option. The CLI will not choose a provider for you, so every run should include
-one of `--api openai`, `--api groq`, or `--api azure`.
+one of `--api openai`, `--api groq`, or `--api azure`. If you apply the
+[Deepgram provider extension](https://github.com/nibzard/sapat/pull/10), you
+can also use `--api deepgram`.
 
 ## Step 2: Create a Daytona Workspace
 
@@ -176,6 +182,16 @@ AZURE_OPENAI_DEPLOYMENT_NAME_CHAT=gpt-4o
 AZURE_OPENAI_API_VERSION_CHAT=2023-03-15-preview
 ```
 
+For Deepgram with the companion provider extension:
+
+```bash
+DEEPGRAM_API_KEY=your_deepgram_api_key
+DEEPGRAM_MODEL=nova-3
+DEEPGRAM_API_ENDPOINT=https://api.deepgram.com/v1/listen
+DEEPGRAM_CORRECTION_MODEL=gpt-4o-mini
+DEEPGRAM_CORRECTION_OPENAI_API_KEY=optional_openai_key_for_correction
+```
+
 Use separate Daytona workspaces or separate `.env` files if you need to test
 multiple providers. That keeps experiments isolated and makes it obvious which
 service created a transcript.
@@ -187,6 +203,7 @@ The provider choice should match the job:
 | OpenAI | You want a common Whisper-compatible default for small files. |
 | Groq | You want fast transcription experiments with Groq-hosted models. |
 | Azure OpenAI | Your organization already manages Azure resources and policies. |
+| Deepgram | You want a dedicated speech API with smart formatting and large audio limits. |
 
 For team workspaces, add `.env` to `.gitignore` before sharing the repository.
 Daytona makes the workspace repeatable, but it should not make credentials
@@ -216,6 +233,12 @@ Run the Azure OpenAI version:
 sapat ./samples/product-demo.mp4 --api azure --language en --quality M
 ```
 
+Run the Deepgram version if your workspace includes the provider extension:
+
+```bash
+sapat ./samples/product-demo.mp4 --api deepgram --language en --quality M
+```
+
 Sapat writes the output beside the input file. For example,
 `product-demo.mp4` becomes `product-demo.txt`. It also removes the temporary
 `product-demo.mp3` file after the transcript is saved.
@@ -239,7 +262,7 @@ sapat ./samples/product-demo.mp4 \
   --api openai \
   --language en \
   --quality M \
-  --prompt "The audio discusses Daytona workspaces, Sapat, ffmpeg, Groq, Azure OpenAI, and transcript review."
+  --prompt "The audio discusses Daytona workspaces, Sapat, ffmpeg, Groq, Azure OpenAI, Deepgram, and transcript review."
 ```
 
 Sapat also exposes a `--correct` flag. When enabled, it uses the configured chat
@@ -397,3 +420,5 @@ into a reliable part of your documentation or knowledge-management workflow.
 - [OpenAI audio API reference](https://platform.openai.com/docs/api-reference/audio)
 - [Groq speech-to-text documentation](https://console.groq.com/docs/speech-to-text)
 - [Azure OpenAI audio concepts](https://learn.microsoft.com/azure/ai-foundry/openai/concepts/audio)
+- [Deepgram pre-recorded audio API](https://developers.deepgram.com/reference/speech-to-text-api/listen)
+- [Sapat Deepgram provider pull request](https://github.com/nibzard/sapat/pull/10)
