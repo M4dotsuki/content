@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-labelledby="title desc">
+  <title id="title">Daytona and Sapat transcription workflow</title>
+  <desc id="desc">A diagram showing video files entering a Daytona workspace, Sapat extracting audio with ffmpeg, an AI transcription API producing text, and the saved transcript being reviewed.</desc>
+  <defs>
+    <linearGradient id="panel" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#eef6ff"/>
+      <stop offset="1" stop-color="#f8fbff"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="14" markerHeight="14" refX="10" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#263238"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="560" fill="#ffffff"/>
+  <rect x="60" y="70" width="1080" height="420" rx="22" fill="url(#panel)" stroke="#b8c7d9" stroke-width="2"/>
+  <text x="600" y="42" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="28" fill="#102033" font-weight="700">AI transcription workflow in a Daytona workspace</text>
+  <g font-family="Inter, Arial, sans-serif">
+    <rect x="110" y="190" width="170" height="120" rx="16" fill="#ffffff" stroke="#5b7cfa" stroke-width="3"/>
+    <text x="195" y="238" text-anchor="middle" font-size="22" fill="#102033" font-weight="700">Video files</text>
+    <text x="195" y="268" text-anchor="middle" font-size="16" fill="#46596e">MP4 inputs</text>
+    <rect x="355" y="160" width="210" height="180" rx="16" fill="#ffffff" stroke="#00a884" stroke-width="3"/>
+    <text x="460" y="212" text-anchor="middle" font-size="22" fill="#102033" font-weight="700">Daytona</text>
+    <text x="460" y="242" text-anchor="middle" font-size="16" fill="#46596e">reproducible</text>
+    <text x="460" y="268" text-anchor="middle" font-size="16" fill="#46596e">workspace</text>
+    <rect x="640" y="160" width="210" height="180" rx="16" fill="#ffffff" stroke="#ff9f1c" stroke-width="3"/>
+    <text x="745" y="210" text-anchor="middle" font-size="22" fill="#102033" font-weight="700">Sapat</text>
+    <text x="745" y="240" text-anchor="middle" font-size="16" fill="#46596e">ffmpeg to MP3</text>
+    <text x="745" y="266" text-anchor="middle" font-size="16" fill="#46596e">provider API</text>
+    <text x="745" y="292" text-anchor="middle" font-size="16" fill="#46596e">optional correction</text>
+    <rect x="925" y="190" width="170" height="120" rx="16" fill="#ffffff" stroke="#1e88e5" stroke-width="3"/>
+    <text x="1010" y="238" text-anchor="middle" font-size="22" fill="#102033" font-weight="700">Transcript</text>
+    <text x="1010" y="268" text-anchor="middle" font-size="16" fill="#46596e">TXT output</text>
+    <path d="M280 250 H340" stroke="#263238" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+    <path d="M565 250 H625" stroke="#263238" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+    <path d="M850 250 H910" stroke="#263238" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+    <rect x="265" y="385" width="670" height="64" rx="14" fill="#102033"/>
+    <text x="600" y="425" text-anchor="middle" font-size="20" fill="#ffffff">Review, search, summarize, or archive the transcript</text>
+  </g>
+</svg>
